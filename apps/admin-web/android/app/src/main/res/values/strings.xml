@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">LMS Admin</string>
+    <string name="title_activity_main">LMS Admin</string>
+    <string name="package_name">com.lms.admin</string>
+    <string name="custom_url_scheme">com.lms.admin</string>
+</resources>
