@@ -37,6 +37,7 @@ export function QuizBuilder({ quiz, teacher, onSave, onCancel }: QuizBuilderProp
   const [subject, setSubject] = useState(quiz?.subject ?? teacher.subject);
   const [course, setCourse] = useState<CourseCode>(quiz?.course ?? "JEE");
   const [durationMinutes, setDurationMinutes] = useState(quiz?.durationMinutes ?? 30);
+  const [negativeMarksPerWrong, setNegativeMarksPerWrong] = useState(quiz?.negativeMarksPerWrong ?? 0);
   const [questions, setQuestions] = useState<Question[]>(quiz?.questions ?? [blankQuestion()]);
   const [isSaving, setIsSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -108,6 +109,7 @@ export function QuizBuilder({ quiz, teacher, onSave, onCancel }: QuizBuilderProp
           teacherName: teacher.name,
           questions,
           durationMinutes: Number(durationMinutes),
+          negativeMarksPerWrong: Number(negativeMarksPerWrong),
           status: quiz?.status ?? "draft",
           scheduledAt: quiz?.scheduledAt ?? null,
         },
@@ -133,6 +135,7 @@ export function QuizBuilder({ quiz, teacher, onSave, onCancel }: QuizBuilderProp
             <option value="NEET">NEET</option>
           </SelectField>
           <TextField label="Duration (minutes)" type="number" min={1} required value={durationMinutes} onChange={(e) => setDurationMinutes(Number(e.target.value))} />
+          <TextField label="Wrong Answer Penalty (e.g. 1 for -1 mark)" type="number" min={0} step={0.25} value={negativeMarksPerWrong} onChange={(e) => setNegativeMarksPerWrong(Number(e.target.value))} placeholder="0 for no negative marks" />
         </div>
       </div>
 
