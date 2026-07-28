@@ -31,12 +31,18 @@ export function QuizTakingView({ quiz, student, attempt, onFinished }: QuizTakin
   const finishedRef = useRef(false);
 
   function computeScore(finalAnswers: Record<string, number[]>): number {
-    return quiz.questions.reduce((sum, q) => {
+    const rawScore = quiz.questions.reduce((sum, q) => {
       const given = (finalAnswers[q.id] ?? []).slice().sort();
+      if (given.length === 0) return sum;
       const correct = q.correctOptionIndexes.slice().sort();
       const isCorrect = given.length === correct.length && given.every((v, i) => v === correct[i]);
-      return sum + (isCorrect ? q.marks : 0);
+      if (isCorrect) {
+        return sum + q.marks;
+      } else {
+        return sum - (quiz.negativeMarksPerWrong ?? 0);
+      }
     }, 0);
+    return Math.max(0, rawScore);
   }
 
   async function finishAsSubmitted() {
@@ -129,6 +135,7 @@ export function QuizTakingView({ quiz, student, attempt, onFinished }: QuizTakin
           <p className="font-semibold text-slate-800">{quiz.title}</p>
           <p className="text-xs text-slate-400">
             {quiz.subject} · {quiz.course} · {QuizModel.totalMarks(quiz)} marks
+            {quiz.negativeMarksPerWrong > 0 ? ` · -${quiz.negativeMarksPerWrong} mark per wrong answer` : ""}
           </p>
         </div>
         <div className="flex items-center gap-4">

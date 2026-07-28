@@ -22,6 +22,7 @@ export interface Quiz {
   teacherName: string;
   questions: Question[];
   durationMinutes: number;
+  negativeMarksPerWrong: number;
   status: QuizStatus; // draft | scheduled | published | closed
   scheduledAt: string | null; // ISO date string
   createdAt: string;
@@ -41,6 +42,7 @@ export const QuizModel = {
       teacherName: String(json.teacherName),
       questions: Array.isArray(json.questions) ? (json.questions as Question[]) : [],
       durationMinutes: Number(json.durationMinutes),
+      negativeMarksPerWrong: Number(json.negativeMarksPerWrong ?? 0),
       status: json.status as QuizStatus,
       scheduledAt: (json.scheduledAt as string) ?? null,
       createdAt: String(json.createdAt),
